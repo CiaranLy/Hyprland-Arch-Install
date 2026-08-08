@@ -13,6 +13,18 @@ Upstream was archived in March 2026.
 hyprctl reload
 ```
 
+## Added keybinds
+
+| Key | Action |
+|---|---|
+| `SUPER + C` | VS Code (`UserKeybinds.conf`) |
+
+`SUPER+C` was unbound upstream — the calculator is `SUPER+ALT+C`, so no `unbind`
+is needed. The installer pulls Microsoft's `visual-studio-code-bin` from the AUR
+rather than the repos' `code` (Code - OSS), because only the Microsoft build can
+reach the Marketplace for Pylance, Remote-SSH and C/C++. Both install
+`/usr/bin/code`, so the keybind works with either.
+
 ## What's different from upstream
 
 ### 1. An Arch dependency installer

@@ -51,6 +51,13 @@ if ! command -v paru >/dev/null 2>&1 && ! command -v yay >/dev/null 2>&1; then
 fi
 AUR=$(command -v paru || command -v yay)
 
+# Microsoft's official VS Code build, for the SUPER+C keybind in UserKeybinds.conf.
+# The repo package "code" (Code - OSS) is FOSS but cannot reach the Microsoft
+# Marketplace, so Pylance, Remote-SSH and C/C++ are unavailable there.
+# Both builds install /usr/bin/code, so the keybind works either way.
+"$AUR" -S --needed --noconfirm visual-studio-code-bin \
+  || echo "  warning: visual-studio-code-bin failed; continuing." >&2
+
 if ! "$AUR" -S --needed --noconfirm wallust; then
   cat <<'EOF'
 
@@ -84,7 +91,7 @@ fail=0
 for b in waybar swww swww-daemon swaync rofi wlogout hypridle hyprlock \
          hyprsunset hyprpicker cliphist wl-paste kitty qs nwg-look \
          grim slurp swappy nm-applet brightnessctl pamixer playerctl \
-         bc socat jq yad; do
+         bc socat jq yad code; do
   if command -v "$b" >/dev/null 2>&1; then
     printf '  ok      %s\n' "$b"
   else
