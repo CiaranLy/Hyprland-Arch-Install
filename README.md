@@ -1,3 +1,14 @@
+> ### 🡒 Arch / CachyOS fork
+>
+> This is a fork of [JaKooLit/Hyprland-Dots](https://github.com/JaKooLit/Hyprland-Dots)
+> patched for **Arch-based distros** and **Hyprland 0.56.x**. It adds an Arch
+> dependency installer and fixes three config options Hyprland 0.56 removed.
+>
+> **See [ARCH-INSTALL.md](ARCH-INSTALL.md).** Quick start: `./install-arch-deps.sh`
+>
+> All credit for the dotfiles goes to [JaKooLit](https://github.com/JaKooLit).
+> The original README follows.
+
 [![jp](https://img.shields.io/badge/lang-jp-blue.svg)](https://github.com/JaKooLit/Hyprland-Dots/blob/main/i18n/README.jp.md)
 [![ro](https://img.shields.io/badge/lang-ro-green.svg)](https://github.com/JaKooLit/Hyprland-Dots/blob/main/i18n/README.ro.md)
 [![ru](https://img.shields.io/badge/lang-ru-red.svg)](https://github.com/JaKooLit/Hyprland-Dots/blob/main/i18n/README.ru.md)
