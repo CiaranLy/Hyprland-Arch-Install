@@ -36,6 +36,12 @@ sudo pacman -S --needed --noconfirm \
   lsd eza starship \
   noto-fonts-emoji ttf-jetbrains-mono-nerd otf-font-awesome
 
+# Discord. vesktop rather than the official "discord" package: it runs natively
+# on Wayland and can share screen audio, which the official Linux client cannot.
+# It is a third-party client bundling Vencord, so client mods are a ToS grey
+# area — swap in "discord" if you would rather stay first-party.
+sudo pacman -S --needed --noconfirm vesktop
+
 # Gaming. steam and the lib32-* packages need the [multilib] repo enabled in
 # /etc/pacman.conf; CachyOS enables it by default, plain Arch does not.
 # Proton itself is NOT a package — the Steam client downloads it once you tick
@@ -130,7 +136,7 @@ fail=0
 for b in waybar swww swww-daemon swaync rofi wlogout hypridle hyprlock \
          hyprsunset hyprpicker cliphist wl-paste kitty qs nwg-look \
          grim slurp swappy nm-applet brightnessctl pamixer playerctl \
-         bc socat jq yad code superset-desktop steam gamemode mangohud; do
+         bc socat jq yad code superset-desktop steam gamemode mangohud vesktop; do
   if command -v "$b" >/dev/null 2>&1; then
     printf '  ok      %s\n' "$b"
   else
