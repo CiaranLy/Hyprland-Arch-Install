@@ -58,6 +58,15 @@ AUR=$(command -v paru || command -v yay)
 "$AUR" -S --needed --noconfirm visual-studio-code-bin \
   || echo "  warning: visual-studio-code-bin failed; continuing." >&2
 
+# Superset (superset.sh), an Electron AI code editor, for the SUPER+V keybind.
+# Prefer superset-desktop-bin over superset-bin: they wrap the same AppImage
+# (identical sha256) and conflict with each other, but this one patches the
+# .desktop Exec/Icon paths so launching from rofi and app menus works.
+# Note: this AUR package has lagged upstream by a few releases; check
+# https://github.com/superset-sh/superset/releases if you need the newest.
+"$AUR" -S --needed --noconfirm superset-desktop-bin \
+  || echo "  warning: superset-desktop-bin failed; continuing." >&2
+
 # VS Code extensions, listed in vscode-extensions.txt next to this script.
 # Skipped silently if code did not install. --force makes this idempotent, so
 # re-running the script is safe.
@@ -107,7 +116,7 @@ fail=0
 for b in waybar swww swww-daemon swaync rofi wlogout hypridle hyprlock \
          hyprsunset hyprpicker cliphist wl-paste kitty qs nwg-look \
          grim slurp swappy nm-applet brightnessctl pamixer playerctl \
-         bc socat jq yad code; do
+         bc socat jq yad code superset-desktop; do
   if command -v "$b" >/dev/null 2>&1; then
     printf '  ok      %s\n' "$b"
   else

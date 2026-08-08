@@ -17,13 +17,39 @@ hyprctl reload
 
 | Key | Action |
 |---|---|
-| `SUPER + C` | VS Code (`UserKeybinds.conf`) |
+| `SUPER + C` | VS Code |
+| `SUPER + V` | Superset ([superset.sh](https://superset.sh)) |
 
-`SUPER+C` was unbound upstream — the calculator is `SUPER+ALT+C`, so no `unbind`
-is needed. The installer pulls Microsoft's `visual-studio-code-bin` from the AUR
-rather than the repos' `code` (Code - OSS), because only the Microsoft build can
-reach the Marketplace for Pylance, Remote-SSH and C/C++. Both install
+Both live in `UserKeybinds.conf`, which upstream reserves for user additions, so
+a dotfiles update will not overwrite them. Both keys were unbound upstream — the
+calculator is `SUPER+ALT+C` and the clipboard manager is `SUPER+ALT+V`, so
+neither needs an `unbind`.
+
+**VS Code:** the installer pulls Microsoft's `visual-studio-code-bin` from the
+AUR rather than the repos' `code` (Code - OSS), because only the Microsoft build
+can reach the Marketplace for Pylance, Remote-SSH and C/C++. Both install
 `/usr/bin/code`, so the keybind works with either.
+
+**Superset:** an Electron AI code editor, packaged as an AppImage. Two AUR
+packages wrap the identical AppImage and conflict with each other;
+`superset-desktop-bin` is preferred because it patches the `.desktop`
+`Exec`/`Icon` paths so launching from rofi and app menus works.
+
+The AUR package has lagged upstream by a few releases. To build a newer version,
+bump `pkgver` in the PKGBUILD and verify the download against the `sha512` that
+upstream publishes in `latest-linux.yml` on each release, rather than trusting
+whatever downloads:
+
+```bash
+git clone https://aur.archlinux.org/superset-desktop-bin.git
+cd superset-desktop-bin
+sed -i 's/^pkgver=.*/pkgver=<new>/' PKGBUILD
+curl -sL https://github.com/superset-sh/superset/releases/download/desktop-v<new>/latest-linux.yml
+curl -fLO https://github.com/superset-sh/superset/releases/download/desktop-v<new>/superset-<new>-x86_64.AppImage
+sha512sum superset-<new>-x86_64.AppImage | cut -d' ' -f1 | xxd -r -p | base64 -w0   # must match the yml
+sed -i "s/^sha256sums=.*/sha256sums=('$(sha256sum superset-<new>-x86_64.AppImage | cut -d' ' -f1)')/" PKGBUILD
+makepkg -si
+```
 
 ## VS Code extensions
 
