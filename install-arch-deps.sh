@@ -58,6 +58,22 @@ AUR=$(command -v paru || command -v yay)
 "$AUR" -S --needed --noconfirm visual-studio-code-bin \
   || echo "  warning: visual-studio-code-bin failed; continuing." >&2
 
+# VS Code extensions, listed in vscode-extensions.txt next to this script.
+# Skipped silently if code did not install. --force makes this idempotent, so
+# re-running the script is safe.
+EXT_LIST="$(dirname "$(realpath "$0")")/vscode-extensions.txt"
+if command -v code >/dev/null 2>&1 && [ -f "$EXT_LIST" ]; then
+  echo "==> 3b/4  VS Code extensions"
+  while IFS= read -r ext; do
+    ext="${ext%%#*}"                        # strip comments
+    ext="$(echo "$ext" | tr -d '[:space:]')" # strip whitespace
+    [ -z "$ext" ] && continue
+    printf '  %s\n' "$ext"
+    code --install-extension "$ext" --force >/dev/null 2>&1 \
+      || echo "    warning: failed to install $ext" >&2
+  done < "$EXT_LIST"
+fi
+
 if ! "$AUR" -S --needed --noconfirm wallust; then
   cat <<'EOF'
 

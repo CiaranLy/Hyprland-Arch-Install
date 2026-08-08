@@ -25,6 +25,23 @@ rather than the repos' `code` (Code - OSS), because only the Microsoft build can
 reach the Marketplace for Pylance, Remote-SSH and C/C++. Both install
 `/usr/bin/code`, so the keybind works with either.
 
+## VS Code extensions
+
+`vscode-extensions.txt` lists extension IDs, one per line; the installer feeds
+each to `code --install-extension --force`. `--force` makes it idempotent, so
+re-running the script is safe.
+
+To capture your current set on any machine:
+
+```bash
+code --list-extensions > vscode-extensions.txt
+```
+
+For ongoing sync across machines, VS Code's built-in **Settings Sync**
+(gear icon → Backup and Sync Settings) is the better tool — it covers settings,
+keybindings and snippets too, and updates continuously. The list here is for
+reproducible fresh installs.
+
 ## What's different from upstream
 
 ### 1. An Arch dependency installer
