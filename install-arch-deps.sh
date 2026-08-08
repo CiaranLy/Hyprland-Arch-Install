@@ -36,6 +36,20 @@ sudo pacman -S --needed --noconfirm \
   lsd eza starship \
   noto-fonts-emoji ttf-jetbrains-mono-nerd otf-font-awesome
 
+# Gaming. steam and the lib32-* packages need the [multilib] repo enabled in
+# /etc/pacman.conf; CachyOS enables it by default, plain Arch does not.
+# Proton itself is NOT a package — the Steam client downloads it once you tick
+# Settings > Compatibility > "Enable Steam Play for all other titles".
+# The lib32 counterparts of gamemode/mangohud are what 32-bit titles load.
+echo "==> 1b/4  Gaming"
+if grep -q '^\[multilib\]' /etc/pacman.conf; then
+  sudo pacman -S --needed --noconfirm \
+    steam gamemode lib32-gamemode mangohud lib32-mangohud
+else
+  echo "  skipped: [multilib] is not enabled in /etc/pacman.conf." >&2
+  echo "  Uncomment the [multilib] section there, run 'sudo pacman -Sy', re-run this." >&2
+fi
+
 # Two upstream renames these dotfiles predate:
 #   swww         -> awww         (package "awww" provides/replaces "swww")
 #   rofi-wayland -> rofi         (rofi 2.0 has Wayland support built in)
@@ -116,7 +130,7 @@ fail=0
 for b in waybar swww swww-daemon swaync rofi wlogout hypridle hyprlock \
          hyprsunset hyprpicker cliphist wl-paste kitty qs nwg-look \
          grim slurp swappy nm-applet brightnessctl pamixer playerctl \
-         bc socat jq yad code superset-desktop; do
+         bc socat jq yad code superset-desktop steam gamemode mangohud; do
   if command -v "$b" >/dev/null 2>&1; then
     printf '  ok      %s\n' "$b"
   else

@@ -51,6 +51,38 @@ sed -i "s/^sha256sums=.*/sha256sums=('$(sha256sum superset-<new>-x86_64.AppImage
 makepkg -si
 ```
 
+## Gaming
+
+The installer adds `steam`, `gamemode` and `mangohud`, each with its `lib32-`
+counterpart — 32-bit titles load the 32-bit libraries, so both halves are
+needed. All of it requires the `[multilib]` repo, which CachyOS enables by
+default and plain Arch does not; the script checks and skips with an
+explanation rather than failing.
+
+**Proton is not a package.** The Steam client downloads it once you enable
+Settings → Compatibility → *Enable Steam Play for all other titles*. Only
+install `proton-ge-custom` from the AUR if a specific game needs it.
+
+### Hybrid laptops (Intel + NVIDIA)
+
+Hyprland renders on the Intel iGPU, so games launched normally use Intel too.
+To run one on the discrete GPU, set its Steam launch options:
+
+```
+prime-run %command%
+```
+
+This needs `nvidia-prime` (already a dependency on CachyOS NVIDIA setups). To
+stack it with the overlay and performance daemon:
+
+```
+prime-run gamemoderun mangohud %command%
+```
+
+Note the `lib32-nvidia-*` package must match the installed driver branch — on
+this machine that is `nvidia-580xx-utils`, so the 32-bit half is
+`lib32-nvidia-580xx-utils`, not the generic `lib32-nvidia-utils`.
+
 ## VS Code extensions
 
 `vscode-extensions.txt` lists extension IDs, one per line; the installer feeds
